@@ -1,6 +1,6 @@
 from django import forms
 
-class CancerPredictionForm(forms.Form):
+class PredictionForm(forms.Form):
     # 30 input fields as float
     features = [f'feature_{i}' for i in range(30)]
 

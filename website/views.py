@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import CancerPredictionForm
+from .forms import PredictionForm
 import pickle
 import numpy as np
 import os
@@ -15,17 +15,17 @@ with open(MODEL_PATH, 'rb') as f:
 with open(SCALER_PATH, 'rb') as f:
     scaler = pickle.load(f)
 
-def index(request):
+def home(request):
     result = None
 
     if request.method == 'POST':
-        form = CancerPredictionForm(request.POST)
+        form = PredictionForm(request.POST)
         if form.is_valid():
             input_data = [form.cleaned_data[f'feature_{i}'] for i in range(30)]
             scaled_input = scaler.transform([input_data])
             prediction = model.predict(scaled_input)[0]
             result = "Benign" if prediction == 1 else "Malignant"
     else:
-        form = CancerPredictionForm()
+        form = PredictionForm()
 
-    return render(request, 'predictor/index.html', {'form': form, 'result': result})
+    return render(request, 'website/index.html', {'form': form, 'result': result})
